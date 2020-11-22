@@ -29,6 +29,20 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+<!-- Нужность при использовании RestTemplate ? -->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-data-rest</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.fasterxml.jackson.dataformat</groupId>-->
+<!--            <artifactId>jackson-dataformat-xml</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>commons-codec</groupId>-->
+<!--            <artifactId>commons-codec</artifactId>-->
+<!--        </dependency>-->
+
         <!-- Библиотека для telegram API -->
         <dependency>
             <groupId>org.telegram</groupId>
