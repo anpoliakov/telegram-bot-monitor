@@ -8,10 +8,10 @@
         <version>2.3.4.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>by.andrew.bot</groupId>
-    <artifactId>telegram-bot-monitor</artifactId>
+    <groupId>by.andrew.webHookBot</groupId>
+    <artifactId>telegram-webHookBot-monitor</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>telegram-bot-monitor</name>
+    <name>telegram-webHookBot-monitor</name>
     <description>Project spring</description>
 
     <properties>
