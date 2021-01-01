@@ -1,7 +1,6 @@
 .git
 .idea
 .mvn
-src
 HELP.md
 mvnw
 mvnw.cmd
