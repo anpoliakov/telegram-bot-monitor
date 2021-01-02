@@ -10,7 +10,7 @@ import java.util.Properties;
 
 public class ChangeLanguageTelegramBot {
     //TODO: ПРОБЛЕМА в пути к фалу с properties!
-    private static final String MAIN_PROPERTIES = "./resources/application.properties";
+    private static final String MAIN_PROPERTIES = "src/main/resources/application.properties";
     private static final String FIELD_WITH_LANGUAGE = "localeTag";
 
     public static void changeLanguageOn(String language){

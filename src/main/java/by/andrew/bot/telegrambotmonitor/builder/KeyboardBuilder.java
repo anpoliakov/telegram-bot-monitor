@@ -78,7 +78,7 @@ public class KeyboardBuilder {
         /* Настройки для отображаемой клавы */
         replyKeyboardMarkup.setSelective(true);
         replyKeyboardMarkup.setResizeKeyboard(true);
-        replyKeyboardMarkup.setOneTimeKeyboard(false);
+        replyKeyboardMarkup.setOneTimeKeyboard(true);
 
         // НУЖНО ЛИ ЭТО?
         //keyboard.clear();
@@ -90,14 +90,11 @@ public class KeyboardBuilder {
                 firstRow.add("> Русский");
                 firstRow.add("> English");
             break;
+            case CURRENT_RATE:
             case BASEMENU:
                 firstRow.add("Текущий курс");
                 firstRow.add("Смена языка");
-                secondRow.add("Настройки");
                 secondRow.add("Помощь");
-            break;
-            case CURRENT_RATE:
-
             break;
         }
 

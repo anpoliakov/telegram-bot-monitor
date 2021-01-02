@@ -35,6 +35,7 @@ public class HandlerUpdates{
         SendMessage sendMessage = null;
         Integer userID = null;
 
+
         //если получено сообщение
         if(isMessage(update)){
             userID = update.getMessage().getFrom().getId();
