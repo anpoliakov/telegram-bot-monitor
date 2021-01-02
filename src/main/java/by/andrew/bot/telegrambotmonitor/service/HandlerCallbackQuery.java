@@ -1,5 +1,8 @@
 package by.andrew.bot.telegrambotmonitor.service;
 
+import by.andrew.bot.telegrambotmonitor.botapi.BotState;
+import by.andrew.bot.telegrambotmonitor.cache.UsersCache;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -12,25 +15,26 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 @Service
 public class HandlerCallbackQuery {
-    public AnswerCallbackQuery processCallback(CallbackQuery callbackQuery){
-        String queryID = callbackQuery.getId();
+
+    @Autowired
+    private UsersCache usersCache;
+
+    public boolean processChooseLanguage(CallbackQuery callbackQuery){
+        boolean isSetChooseLanguage = false;
         String textButton = callbackQuery.getData();
+        Integer userID = callbackQuery.getFrom().getId();
 
-        AnswerCallbackQuery answerCallbackQuery = new AnswerCallbackQuery();
-        answerCallbackQuery.setCallbackQueryId(queryID);
-        answerCallbackQuery.setShowAlert(false);
-
-        switch (textButton){
-            case "RUSSIAN":
-                System.out.println("Руский язык установлен!");
-                answerCallbackQuery.setText("Руский язык установлен!");
-            break;
-            case "ENGLISH":
-                System.out.println("Английский язык установлен!");
-                answerCallbackQuery.setText("The English language is installed!");
-            break;
+        if(textButton.equals("RUSSIAN")){
+            isSetChooseLanguage = true;
+            System.out.println("Руский язык установлен!");
+        }else if(textButton.equals("ENGLISH")){
+            isSetChooseLanguage = true;
+            System.out.println("Английский язык установлен!");
         }
 
-        return answerCallbackQuery;
+        //в любом случае - переводим бота в состояние BASEMENU
+        usersCache.setBotStateForUserID(userID, BotState.BASEMENU);
+
+        return isSetChooseLanguage;
     }
 }

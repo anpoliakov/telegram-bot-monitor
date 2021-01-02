@@ -29,6 +29,7 @@ public class SwitcherBotState {
         String textMsg = message.getText();                         // Сообщение
 
         switch (textMsg){
+            case "Смена языка":
             case "/start":
                 currentState = BotState.CHOICE_LANGUAGE;
                 System.out.println("State - CHOICE_LANGUAGE");

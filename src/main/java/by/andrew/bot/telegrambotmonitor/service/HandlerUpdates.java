@@ -6,8 +6,6 @@ import by.andrew.bot.telegrambotmonitor.builder.SendMessageBuilder;
 import by.andrew.bot.telegrambotmonitor.cache.UsersCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.bots.TelegramWebhookBot;
-import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -32,37 +30,26 @@ public class HandlerUpdates{
     @Autowired
     private HandlerCallbackQuery handlerCallbackQuery;
 
-    @Autowired
-    private UsersCache usersCache;
-
     /* основа */
     public BotApiMethod processUpdate(Update update){
+        SendMessage sendMessage = null;
+        Integer userID = null;
 
         //если получено сообщение
         if(isMessage(update)){
-            SendMessage sendMessage = null;
-            Integer userID = update.getMessage().getFrom().getId();
-
+            userID = update.getMessage().getFrom().getId();
             switcherBotState.switchStateBot(update.getMessage());
-            sendMessage = sendMessageBuilder.getSendMessage(userID);
-            keyboardBuilder.createKeyboard(sendMessage);
-            return sendMessage;
         }
 
         //если пользователь нажал кнопку
         if(update.hasCallbackQuery()){
-            Integer userID = update.getCallbackQuery().getFrom().getId();
-
-            AnswerCallbackQuery answerCallbackQuery = handlerCallbackQuery.processCallback(update.getCallbackQuery());
-            if(answerCallbackQuery != null){
-                usersCache.setBotStateForUserID(userID, BotState.BASEMENU);
-                SendMessage sendMessage = sendMessageBuilder.getSendMessage(userID);
-                return keyboardBuilder.createKeyboard(sendMessage); 
-            }
-            return answerCallbackQuery;
+            userID = update.getCallbackQuery().getFrom().getId();
+            handlerCallbackQuery.processChooseLanguage(update.getCallbackQuery());              //изменяю язык меню (если нужно)
         }
 
-        return new SendMessage(String.valueOf(update.getMessage().getFrom().getId()), "DEFAULT ");
+        sendMessage = sendMessageBuilder.getSendMessage(userID);
+        keyboardBuilder.createKeyboard(sendMessage);
+        return sendMessage;
     }
 
     /* Есть ли сообщение от пользователя ? */
