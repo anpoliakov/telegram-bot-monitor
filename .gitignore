@@ -4,4 +4,5 @@
 HELP.md
 mvnw
 mvnw.cmd
+target/classes
 telegram-webHookBot-monitor.iml

@@ -6,6 +6,7 @@ import by.andrew.bot.telegrambotmonitor.builder.SendMessageBuilder;
 import by.andrew.bot.telegrambotmonitor.cache.UsersCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.bots.TelegramWebhookBot;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -28,17 +29,37 @@ public class HandlerUpdates{
     @Autowired
     private SendMessageBuilder sendMessageBuilder;
 
+    @Autowired
+    private HandlerCallbackQuery handlerCallbackQuery;
+
+    @Autowired
+    private UsersCache usersCache;
+
     /* основа */
     public BotApiMethod processUpdate(Update update){
 
+        //если получено сообщение
         if(isMessage(update)){
             SendMessage sendMessage = null;
             Integer userID = update.getMessage().getFrom().getId();
 
-            switcherBotState.switchStateBot(update.getMessage());                       //бот переключается в определённое состояние
+            switcherBotState.switchStateBot(update.getMessage());
             sendMessage = sendMessageBuilder.getSendMessage(userID);
-            keyboardBuilder.createReplyKeyboard(sendMessage);
+            keyboardBuilder.createKeyboard(sendMessage);
             return sendMessage;
+        }
+
+        //если пользователь нажал кнопку
+        if(update.hasCallbackQuery()){
+            Integer userID = update.getCallbackQuery().getFrom().getId();
+
+            AnswerCallbackQuery answerCallbackQuery = handlerCallbackQuery.processCallback(update.getCallbackQuery());
+            if(answerCallbackQuery != null){
+                usersCache.setBotStateForUserID(userID, BotState.BASEMENU);
+                SendMessage sendMessage = sendMessageBuilder.getSendMessage(userID);
+                return keyboardBuilder.createKeyboard(sendMessage); 
+            }
+            return answerCallbackQuery;
         }
 
         return new SendMessage(String.valueOf(update.getMessage().getFrom().getId()), "DEFAULT ");
